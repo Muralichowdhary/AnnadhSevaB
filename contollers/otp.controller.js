@@ -1,4 +1,4 @@
-const Otp = require('../models/otp.model');
+const Otp = require('../Models/otp.model');
 const generateOtp = require('../utils/generateOtp');
 const sendEmail = require('../utils/sendEmail');
 const { hashData, verifyHashedData } = require('../utils/hashData');
