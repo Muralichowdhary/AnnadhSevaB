@@ -9,11 +9,12 @@ const app = express();
 
 // CORS configuration
 app.use(
-  cors({
-    origin: ["https://annadh-seva-f.vercel.app/"]
-  })
-);
-
+    cors({
+      origin: ["https://annadh-seva-f.vercel.app"],
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"]
+    })
+  );
 // Middleware for parsing JSON
 app.use(express.json());
 
