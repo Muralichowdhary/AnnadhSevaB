@@ -8,14 +8,11 @@ const { adminAuth } = require("./middleware/adminAuth.js");
 const app = express();
 
 // CORS configuration
-app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://annadh-seva-f.vercel.app/',
-        'https://annadh-seva-f-git-main-sudireddy-muralis-projects.vercel.app/',
-        'https://annadh-seva-f-sudireddy-muralis-projects.vercel.app/'
-    ]
-}));
+app.use(
+  cors({
+    origin: ["https://annadh-seva-f.vercel.app/"],
+  })
+);
 
 // Middleware for parsing JSON
 app.use(express.json());
@@ -23,8 +20,8 @@ app.use(express.json());
 const port = process.env.PORT || 3001;
 
 // Import routes
-const otpRoutes = require('./Routes/otpRoutes');
-const validateOTP = require('./Routes/validateRoute');
+const otpRoutes = require("./Routes/otpRoutes");
+const validateOTP = require("./Routes/validateRoute");
 const homeRoutes = require("./Routes/home.route.js");
 const userRoutes = require("./Routes/user.route.js");
 const donationRoutes = require("./Routes/donation.route.js");
@@ -37,15 +34,18 @@ const testEmailRoute = require("./Routes/testEmail.js"); // Import the test emai
 
 // Connect to MongoDB
 mongoose
-    .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("Connected to DataBase successfully..."))
-    .catch(err => console.error("Could not connect to DataBase:", err));
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to DataBase successfully..."))
+  .catch((err) => console.error("Could not connect to DataBase:", err));
 
 // API endpoints
 app.use("/api/", homeRoutes);
 app.use("/api/auth", userRoutes);
-app.use('/api/otp', otpRoutes);
-app.use('/api/otpVerify', validateOTP);
+app.use("/api/otp", otpRoutes);
+app.use("/api/otpVerify", validateOTP);
 app.post("/api/contact", contactController.postContactForm);
 app.get("/api/contact", contactController.getContacts);
 
@@ -56,12 +56,12 @@ app.use("/api/volunteer", validateToken, volunteerRoutes);
 app.use("/admin", validateToken, adminRoutes);
 
 // Use the test email route
-app.use('/api', testEmailRoute);
+app.use("/api", testEmailRoute);
 
 // Error handling middleware
 app.use(errorHandler);
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Proxy server listening at http://localhost:${port}`);
+  console.log(`Proxy server listening at http://localhost:${port}`);
 });
