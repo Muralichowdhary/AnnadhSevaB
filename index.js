@@ -10,7 +10,7 @@ const app = express();
 // CORS configuration
 app.use(
   cors({
-    origin: ["https://annadh-seva-f.vercel.app/"],
+    origin: ["https://annadh-seva-f.vercel.app/"]
   })
 );
 
