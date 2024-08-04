@@ -6,6 +6,8 @@ const errorHandler = require("./middleware/errorHandling.js");
 const { adminAuth } = require("./middleware/adminAuth.js");
 
 const app = express();
+
+// CORS configuration
 app.use(cors({
     origin: [
         'http://localhost:3000',
@@ -14,6 +16,8 @@ app.use(cors({
         'https://annadh-seva-f-sudireddy-muralis-projects.vercel.app/'
     ]
 }));
+
+// Middleware for parsing JSON
 app.use(express.json());
 
 const port = process.env.PORT || 3001;
@@ -31,11 +35,13 @@ const contactController = require("./controllers/contact.controller.js");
 const { validateToken } = require("./middleware/validateToken");
 const testEmailRoute = require("./Routes/testEmail.js"); // Import the test email route
 
+// Connect to MongoDB
 mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => console.log("Connected to DataBase successfully..."));
+    .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("Connected to DataBase successfully..."))
+    .catch(err => console.error("Could not connect to DataBase:", err));
 
-// Connecting API endpoints to routes
+// API endpoints
 app.use("/api/", homeRoutes);
 app.use("/api/auth", userRoutes);
 app.use('/api/otp', otpRoutes);
@@ -52,9 +58,10 @@ app.use("/admin", validateToken, adminRoutes);
 // Use the test email route
 app.use('/api', testEmailRoute);
 
+// Error handling middleware
 app.use(errorHandler);
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Proxy server listening at http://localhost:${port}`);
+    console.log(`Proxy server listening at http://localhost:${port}`);
 });
