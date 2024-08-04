@@ -3,38 +3,39 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const errorHandler = require("./middleware/errorHandling.js");
-const {adminAuth} = require("./middleware/adminAuth.js")
+const { adminAuth } = require("./middleware/adminAuth.js");
 
 const app = express();
 app.use(cors({
-    origin:[
-        'http://localhost:3000'
-    ]}));
+    origin: [
+        'http://localhost:3000',
+        'https://annadh-seva-f.vercel.app/'
+    ]
+}));
 app.use(express.json());
 
 const port = process.env.PORT || 3001;
 
-const otpRoutes = require('./Routes/otpRoutes'); // Import the OTP routes
-const validateOTP = require('./Routes/validateRoute'); // Import the OTP verification routes
-
+// Import routes
+const otpRoutes = require('./Routes/otpRoutes');
+const validateOTP = require('./Routes/validateRoute');
 const homeRoutes = require("./Routes/home.route.js");
 const userRoutes = require("./Routes/user.route.js");
 const donationRoutes = require("./Routes/donation.route.js");
 const requestRoutes = require("./Routes/request.route.js");
 const adminRoutes = require("./Routes/admin.route.js");
 const volunteerRoutes = require("./Routes/volunteer.route.js");
-const contactController = require("./controllers/contact.controller.js")
+const contactController = require("./controllers/contact.controller.js");
 const { validateToken } = require("./middleware/validateToken");
+const testEmailRoute = require("./Routes/testEmail.js"); // Import the test email route
 
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => console.log("Connected to DataBase successfully..."));
 
 // Connecting API endpoints to routes
-
 app.use("/api/", homeRoutes);
 app.use("/api/auth", userRoutes);
-
 app.use('/api/otp', otpRoutes);
 app.use('/api/otpVerify', validateOTP);
 app.post("/api/contact", contactController.postContactForm);
@@ -44,8 +45,10 @@ app.get("/api/contact", contactController.getContacts);
 app.use("/api/donation", validateToken, donationRoutes);
 app.use("/api/request", validateToken, requestRoutes);
 app.use("/api/volunteer", validateToken, volunteerRoutes);
-// app.use(adminAuth);
 app.use("/admin", validateToken, adminRoutes);
+
+// Use the test email route
+app.use('/api', testEmailRoute);
 
 app.use(errorHandler);
 
