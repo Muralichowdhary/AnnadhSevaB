@@ -17,10 +17,15 @@ const registerUser = async (req, res) => {
         long: req.body.long,
       },
       phone: req.body.phone,
+
+    
     });
+    console.log(user);
     res.status(201).json({ msg: "User created successfully", user: user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ msg: "Error creating user", error: error.message });
+    
   }
 };
 
