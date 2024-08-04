@@ -9,7 +9,9 @@ const app = express();
 app.use(cors({
     origin: [
         'http://localhost:3000',
-        'https://annadh-seva-f.vercel.app/'
+        'https://annadh-seva-f.vercel.app/',
+        'https://annadh-seva-f-git-main-sudireddy-muralis-projects.vercel.app/',
+        'https://annadh-seva-f-sudireddy-muralis-projects.vercel.app/'
     ]
 }));
 app.use(express.json());
